@@ -1,37 +1,53 @@
-// --- DOM 참조 ---
-const yesBtn = document.getElementById('yesBtn')
-const noBtn = document.getElementById('noBtn')
+/* =========================
+   Binary Card Trick (0~31)
+   - Intro → Game flow
+   - Rose/Pink theme UX
+   ========================= */
+
+/* ------- DOM References ------- */
+const introSection = document.getElementById('introSection')
+const startBtn = document.getElementById('startBtn')
+
+const gamePanel = document.getElementById('gamePanel')
 const cardContainer = document.getElementById('cardContainer')
 const stepLabel = document.getElementById('stepLabel')
 const progressBar = document.getElementById('progressBar')
+const yesBtn = document.getElementById('yesBtn')
+const noBtn = document.getElementById('noBtn')
 
 const resultSection = document.getElementById('resultSection')
-const finalSection = document.getElementById('finalSection')
 const answerValue = document.getElementById('answerValue')
 const correctBtn = document.getElementById('correctBtn')
 const wrongBtn = document.getElementById('wrongBtn')
+
+const finalSection = document.getElementById('finalSection')
 const finalBox = document.getElementById('finalBox')
 const restartBtn = document.getElementById('restartBtn')
 
-// --- 카드 생성 ---
+/* ------- State ------- */
+let cards = []
+let current = 0 // 0..4
+let result = 0 // 0..31
+let gameStarted = false
+
+/* ------- Logic ------- */
+// bit(0..4)별 해당 비트가 1인 숫자 목록 생성
 function makeCards() {
-  const cards = []
+  const out = []
   for (let bit = 0; bit < 5; bit++) {
-    const card = []
+    const list = []
     for (let n = 0; n < 32; n++) {
-      if ((n >> bit) & 1) card.push(n)
+      if ((n >> bit) & 1) list.push(n)
     }
-    cards.push(card)
+    out.push(list)
   }
-  return cards
+  return out
 }
 
-const CARDS = makeCards()
-let current = 0
-let result = 0
-
-// --- 카드 표시 (부드러운 페이드 효과) ---
+// 카드 렌더 (부드러운 전환)
 function renderCard() {
+  if (!gameStarted || current < 0 || current > 5) return
+
   cardContainer.style.opacity = 0
   setTimeout(() => {
     cardContainer.innerHTML = ''
@@ -43,7 +59,7 @@ function renderCard() {
 
     const grid = document.createElement('div')
     grid.className = 'grid'
-    CARDS[current].forEach((n) => {
+    cards[current].forEach((n) => {
       const cell = document.createElement('div')
       cell.className = 'num'
       cell.textContent = n
@@ -54,15 +70,15 @@ function renderCard() {
     stepLabel.textContent = `${current + 1} / 5`
     progressBar.style.width = `${(current / 5) * 100}%`
 
-    // 페이드 인
-    cardContainer.style.transition = 'opacity 0.6s ease'
+    cardContainer.style.transition = 'opacity .45s ease'
     cardContainer.style.opacity = 1
-  }, 300)
+  }, 180)
 }
 
-// --- 응답 처리 ---
 function next(answerYes) {
-  if (answerYes) result += 2 ** current
+  if (!gameStarted) return
+
+  if (answerYes) result += 2 ** current // 해당 비트의 가중치 더하기
   current++
 
   if (current < 5) {
@@ -74,49 +90,84 @@ function next(answerYes) {
   }
 }
 
-// --- 결과 표시 ---
 function showResult() {
-  answerValue.textContent = result
+  answerValue.textContent = String(result)
   yesBtn.disabled = true
   noBtn.disabled = true
   resultSection.classList.remove('hidden')
 }
 
-// --- 정답 여부 ---
 function showFinal(correct) {
   finalBox.textContent = correct
-    ? '정답이에요! 🌹 당신의 마음을 읽었어요.'
-    : '아쉽네요 💔 다시 해볼까요?'
+    ? '정답입니다. 멋집니다!'
+    : '아쉽습니다. 다시 도전해보세요.'
   finalSection.classList.remove('hidden')
 }
 
-// --- 재시작 ---
 function resetGame() {
+  // 본 게임만 초기화 (인트로로 돌아가진 않음)
   current = 0
   result = 0
-  resultSection.classList.add('hidden')
-  finalSection.classList.add('hidden')
   yesBtn.disabled = false
   noBtn.disabled = false
+  resultSection.classList.add('hidden')
+  finalSection.classList.add('hidden')
+  progressBar.style.width = '0%'
+  stepLabel.textContent = '1 / 5'
   renderCard()
 }
 
-// --- 이벤트 바인딩 ---
-yesBtn.onclick = () => next(true)
-noBtn.onclick = () => next(false)
-correctBtn.onclick = () => showFinal(true)
-wrongBtn.onclick = () => showFinal(false)
-restartBtn.onclick = resetGame
+function startGame() {
+  // 인트로 → 게임 패널로 전환
+  introSection.classList.add('fade-out')
+  setTimeout(() => {
+    introSection.classList.add('hidden')
+    gamePanel.classList.remove('hidden')
+    gamePanel.classList.add('fade-in')
 
-// --- 단축키 지원 ---
+    // 초기화 및 렌더
+    cards = makeCards()
+    current = 0
+    result = 0
+    gameStarted = true
+
+    yesBtn.disabled = false
+    noBtn.disabled = false
+    progressBar.style.width = '0%'
+    stepLabel.textContent = '1 / 5'
+
+    renderCard()
+    // 접근성: 시작 후 '있다' 버튼에 포커스
+    yesBtn.focus()
+  }, 600)
+}
+
+/* ------- Events ------- */
+startBtn.addEventListener('click', startGame)
+yesBtn.addEventListener('click', () => next(true))
+noBtn.addEventListener('click', () => next(false))
+
+correctBtn.addEventListener('click', () => showFinal(true))
+wrongBtn.addEventListener('click', () => showFinal(false))
+restartBtn.addEventListener('click', resetGame)
+
+// 단축키: Enter=시작, Y/N=응답, R=다시하기
 window.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase()
-  if (resultSection.classList.contains('hidden')) {
-    if (key === 'y') next(true)
-    if (key === 'n') next(false)
+
+  // 아직 게임 시작 전
+  if (!gameStarted) {
+    if (key === 'enter') startGame()
+    return
   }
+
+  const resultOpen = !resultSection.classList.contains('hidden')
+  const finalOpen = !finalSection.classList.contains('hidden')
+
+  if (!resultOpen && !finalOpen) {
+    if (key === 'y') next(true)
+    else if (key === 'n') next(false)
+  }
+
   if (key === 'r') resetGame()
 })
-
-// --- 초기 표시 ---
-renderCard()

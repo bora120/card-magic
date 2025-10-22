@@ -1,70 +1,100 @@
+/* ===== 색상/테마 ===== */
 :root {
   --bg: #120b12;
   --panel: #1a1017;
   --card: #1e121a;
+
   --accent1: #ff77b4;
   --accent2: #ff99cc;
   --accent3: #ffd6e6;
+
   --text: #ffeef7;
   --muted: #c5a8b7;
+
   --yes: #ff9ecd;
-  --no: #ff7c8a;
+  --no: #ff5a73;
+
   --border: #3b2431;
   --shadow: 0 8px 25px rgba(255, 120, 180, 0.2);
 }
 
+/* ===== Reset/Base ===== */
 * {
   box-sizing: border-box;
 }
 html,
 body {
   height: 100%;
-  margin: 0;
 }
 body {
-  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-  background: radial-gradient(1200px 800px at 20% 0%, #1a0b15, var(--bg));
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, 'Pretendard', 'Noto Sans KR',
+    sans-serif;
+  background: radial-gradient(
+    1200px 800px at 20% 0%,
+    #1a0b15 0%,
+    var(--bg) 60%
+  );
   color: var(--text);
   overflow-x: hidden;
-  animation: fadeIn 1s ease-in;
 }
 
-/* ✨ 페이드 인 */
-@keyframes fadeIn {
-  from {
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
+    animation: fadeIn 0.6s ease forwards;
   }
-  to {
+  .fade-out {
     opacity: 1;
     transform: translateY(0);
+    animation: fadeOut 0.6s ease forwards;
+  }
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
   }
 }
 
+/* ===== Layout ===== */
 .container {
   max-width: 900px;
   margin: 0 auto;
   padding: 30px 20px 50px;
 }
-
-.header {
-  text-align: center;
-  margin-bottom: 24px;
+.hidden {
+  display: none !important;
 }
-.title {
-  font-size: 2.2rem;
-  margin-bottom: 8px;
+
+/* ===== Intro ===== */
+.intro {
+  text-align: center;
+  margin-top: 100px;
+}
+.intro-title {
+  font-size: clamp(28px, 5vw, 42px);
+  margin: 0 0 10px;
   background: linear-gradient(90deg, var(--accent1), var(--accent2));
   -webkit-background-clip: text;
   color: transparent;
-  text-shadow: 0 0 10px rgba(255, 160, 220, 0.3);
+  text-shadow: 0 0 12px rgba(255, 160, 200, 0.35);
 }
-.subtitle {
+.intro-desc {
   color: var(--muted);
+  font-size: 1.05rem;
   line-height: 1.7;
-  font-size: 0.95rem;
+  margin: 0 0 22px;
 }
 
+/* ===== Panel/Sections ===== */
 .panel,
 .result,
 .final {
@@ -74,34 +104,34 @@ body {
   box-shadow: var(--shadow);
   padding: 20px;
   margin-top: 12px;
-  transition: all 0.4s ease;
-  animation: fadeIn 0.6s ease;
 }
 
+/* ===== Status / Progress ===== */
 .status {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
 }
-
 .progress-wrap {
   flex: 1;
-  background: #2a1a25;
-  border-radius: 999px;
   height: 8px;
+  border-radius: 999px;
   overflow: hidden;
+  background: #2a1a25;
+  border: 1px solid var(--border);
 }
 .progress {
   height: 100%;
+  width: 0%;
   background: linear-gradient(
     90deg,
     var(--accent1),
     var(--accent2),
     var(--accent3)
   );
-  transition: width 0.3s ease;
   box-shadow: 0 0 8px rgba(255, 120, 180, 0.5);
+  transition: width 0.3s ease;
 }
 .step {
   font-size: 0.9rem;
@@ -110,15 +140,15 @@ body {
   text-align: right;
 }
 
+/* ===== Card Grid ===== */
 .card-wrap {
   display: grid;
   gap: 10px;
-  animation: fadeIn 0.7s ease;
 }
 .card-title {
   font-size: 1rem;
   color: var(--muted);
-  margin-bottom: 6px;
+  margin: 4px 0;
   text-align: center;
 }
 .grid {
@@ -127,56 +157,65 @@ body {
   gap: 8px;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 14px;
-  transition: transform 0.4s ease, opacity 0.4s ease;
 }
 .num {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 8px;
   text-align: center;
   padding: 8px;
-  font-weight: 500;
-  transition: background 0.2s ease, transform 0.1s ease;
+  font-variant-numeric: tabular-nums;
+  transition: background 0.2s ease, transform 0.08s ease;
 }
 .num:hover {
-  background: rgba(255, 160, 200, 0.25);
-  transform: scale(1.07);
+  background: rgba(255, 160, 200, 0.22);
+  transform: translateY(-1px);
 }
 
+/* ===== Controls / Buttons ===== */
 .controls {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .btn {
-  border: none;
+  border: 0;
   border-radius: 10px;
   padding: 10px 18px;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: filter 0.2s ease, transform 0.06s ease;
 }
 .btn:active {
-  transform: scale(0.96);
+  transform: translateY(1px);
+}
+
+.btn-start {
+  background: linear-gradient(180deg, var(--accent1), var(--accent2));
+  color: #300a15;
+  box-shadow: 0 0 20px rgba(255, 130, 190, 0.4);
+}
+.btn-start:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 0 28px rgba(255, 160, 220, 0.55);
 }
 
 .btn-yes {
-  background: linear-gradient(180deg, var(--accent1), var(--accent2));
+  background: linear-gradient(180deg, var(--yes), #ff7fbe);
   color: #2a0a17;
-  box-shadow: 0 0 15px rgba(255, 120, 180, 0.4);
+  box-shadow: 0 0 18px rgba(255, 120, 180, 0.35);
 }
 .btn-no {
-  background: linear-gradient(180deg, #ff768a, #ff5a73);
+  background: linear-gradient(180deg, var(--no), #ff768a);
   color: #2a070b;
-  box-shadow: 0 0 15px rgba(255, 100, 150, 0.4);
+  box-shadow: 0 0 18px rgba(255, 100, 150, 0.35);
 }
 .btn-yes:hover,
 .btn-no:hover {
   filter: brightness(1.08);
-  box-shadow: 0 0 25px rgba(255, 160, 220, 0.5);
 }
 
 .btn-primary {
@@ -194,17 +233,34 @@ body {
   color: var(--accent3);
 }
 .btn-outline:hover {
-  background: rgba(255, 130, 180, 0.1);
+  background: rgba(255, 130, 180, 0.08);
 }
 
-.hidden {
-  display: none;
+/* ===== Result / Final ===== */
+.result-title {
+  margin: 0 0 8px;
 }
-
 .result-text {
-  font-size: 1.3rem;
+  margin: 6px 0 14px;
+  font-size: 1.25rem;
   text-align: center;
 }
+.confirm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.confirm-label {
+  color: var(--muted);
+  margin: 0;
+}
+.confirm-controls {
+  display: flex;
+  gap: 10px;
+}
+
 .final-box {
   padding: 14px;
   background: #160d13;
@@ -219,8 +275,20 @@ body {
   margin-top: 12px;
 }
 
+/* ===== Footer ===== */
+.footer {
+  margin-top: 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 640px) {
   .grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .controls {
+    justify-content: center;
   }
 }

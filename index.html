@@ -2,62 +2,91 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>이진 카드 마술 (0~31)</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="container">
-      <header class="header">
-        <h1 class="title">이진 카드 마술</h1>
-        <p class="subtitle">
-          0~31 중 하나의 숫자를 마음속으로 생각하세요.<br />
-          카드마다 "있다 / 없다"로만 대답하면 제가 숫자를 맞춥니다.
+      <!-- 인트로: 게임 설명 + 시작 -->
+      <section class="intro" id="introSection" aria-label="게임 안내">
+        <h1 class="intro-title">이진 카드 마술</h1>
+        <p class="intro-desc">
+          0부터 31 사이의 숫자 중 하나를 마음속으로 생각하세요.<br />
+          총 5장의 카드에서 “있다 / 없다”만 선택하면 숫자를 맞춥니다.
         </p>
-      </header>
+        <button class="btn btn-start" id="startBtn" aria-label="게임 시작하기">
+          게임 시작하기
+        </button>
+      </section>
 
-      <section class="panel">
-        <div class="status">
-          <div class="progress-wrap">
-            <div class="progress" id="progressBar"></div>
+      <!-- 본 게임 -->
+      <section class="panel hidden" id="gamePanel" aria-label="본 게임 패널">
+        <div class="status" role="status" aria-live="polite">
+          <div class="progress-wrap" aria-label="진행률">
+            <div class="progress" id="progressBar" style="width: 0%"></div>
           </div>
-          <div class="step" id="stepLabel">1 / 5</div>
+          <div class="step" id="stepLabel" aria-label="현재 단계">1 / 5</div>
         </div>
 
-        <div id="cardContainer" class="card-wrap"></div>
+        <div id="cardContainer" class="card-wrap" aria-live="polite"></div>
 
         <div class="controls">
-          <button class="btn btn-no" id="noBtn">없다</button>
-          <button class="btn btn-yes" id="yesBtn">있다</button>
+          <button class="btn btn-no" id="noBtn" aria-label="없다 (N)">
+            없다
+          </button>
+          <button class="btn btn-yes" id="yesBtn" aria-label="있다 (Y)">
+            있다
+          </button>
         </div>
       </section>
 
-      <section class="result hidden" id="resultSection">
+      <!-- 결과 확인 -->
+      <section class="result hidden" id="resultSection" aria-label="결과 확인">
         <div class="result-box">
           <h2 class="result-title">결과</h2>
           <p class="result-text">
             당신이 생각한 숫자는 <strong id="answerValue">0</strong> 입니다.
           </p>
           <div class="confirm">
-            <p>맞나요?</p>
+            <p class="confirm-label">맞나요?</p>
             <div class="confirm-controls">
-              <button class="btn btn-ghost" id="wrongBtn">아니오</button>
-              <button class="btn btn-primary" id="correctBtn">예</button>
+              <button
+                class="btn btn-ghost"
+                id="wrongBtn"
+                aria-label="틀렸습니다"
+              >
+                아니오
+              </button>
+              <button
+                class="btn btn-primary"
+                id="correctBtn"
+                aria-label="맞습니다"
+              >
+                예
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="final hidden" id="finalSection">
+      <!-- 최종 메시지 + 다시하기 -->
+      <section class="final hidden" id="finalSection" aria-label="최종 안내">
         <div class="final-box" id="finalBox"></div>
         <div class="final-controls">
-          <button class="btn btn-outline" id="restartBtn">다시하기</button>
+          <button
+            class="btn btn-outline"
+            id="restartBtn"
+            aria-label="다시하기 (R)"
+          >
+            다시하기
+          </button>
         </div>
       </section>
 
       <footer class="footer">
         <small
-          >단축키: <kbd>Y</kbd>=있다 / <kbd>N</kbd>=없다 /
+          >단축키: <kbd>Enter</kbd>=시작, <kbd>Y</kbd>=있다, <kbd>N</kbd>=없다,
           <kbd>R</kbd>=다시하기</small
         >
       </footer>
