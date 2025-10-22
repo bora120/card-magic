@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이진 카드 마술 (0~31)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1 class="title">이진 카드 마술</h1>
+        <p class="subtitle">
+          0~31 중 하나의 숫자를 마음속으로 생각하세요.<br />
+          카드마다 "있다 / 없다"로만 대답하면 제가 숫자를 맞춥니다.
+        </p>
+      </header>
+
+      <section class="panel">
+        <div class="status">
+          <div class="progress-wrap">
+            <div class="progress" id="progressBar"></div>
+          </div>
+          <div class="step" id="stepLabel">1 / 5</div>
+        </div>
+
+        <div id="cardContainer" class="card-wrap"></div>
+
+        <div class="controls">
+          <button class="btn btn-no" id="noBtn">없다</button>
+          <button class="btn btn-yes" id="yesBtn">있다</button>
+        </div>
+      </section>
+
+      <section class="result hidden" id="resultSection">
+        <div class="result-box">
+          <h2 class="result-title">결과</h2>
+          <p class="result-text">
+            당신이 생각한 숫자는 <strong id="answerValue">0</strong> 입니다.
+          </p>
+          <div class="confirm">
+            <p>맞나요?</p>
+            <div class="confirm-controls">
+              <button class="btn btn-ghost" id="wrongBtn">아니오</button>
+              <button class="btn btn-primary" id="correctBtn">예</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="final hidden" id="finalSection">
+        <div class="final-box" id="finalBox"></div>
+        <div class="final-controls">
+          <button class="btn btn-outline" id="restartBtn">다시하기</button>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <small
+          >단축키: <kbd>Y</kbd>=있다 / <kbd>N</kbd>=없다 /
+          <kbd>R</kbd>=다시하기</small
+        >
+      </footer>
+    </main>
+
+    <script src="java.js"></script>
+  </body>
+</html>

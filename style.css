@@ -1,0 +1,226 @@
+:root {
+  --bg: #120b12;
+  --panel: #1a1017;
+  --card: #1e121a;
+  --accent1: #ff77b4;
+  --accent2: #ff99cc;
+  --accent3: #ffd6e6;
+  --text: #ffeef7;
+  --muted: #c5a8b7;
+  --yes: #ff9ecd;
+  --no: #ff7c8a;
+  --border: #3b2431;
+  --shadow: 0 8px 25px rgba(255, 120, 180, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  background: radial-gradient(1200px 800px at 20% 0%, #1a0b15, var(--bg));
+  color: var(--text);
+  overflow-x: hidden;
+  animation: fadeIn 1s ease-in;
+}
+
+/* ✨ 페이드 인 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px 50px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(255, 160, 220, 0.3);
+}
+.subtitle {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.panel,
+.result,
+.final {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-top: 12px;
+  transition: all 0.4s ease;
+  animation: fadeIn 0.6s ease;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.progress-wrap {
+  flex: 1;
+  background: #2a1a25;
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+.progress {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent1),
+    var(--accent2),
+    var(--accent3)
+  );
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(255, 120, 180, 0.5);
+}
+.step {
+  font-size: 0.9rem;
+  color: var(--muted);
+  min-width: 60px;
+  text-align: right;
+}
+
+.card-wrap {
+  display: grid;
+  gap: 10px;
+  animation: fadeIn 0.7s ease;
+}
+.card-title {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-align: center;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.num {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  text-align: center;
+  padding: 8px;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.num:hover {
+  background: rgba(255, 160, 200, 0.25);
+  transform: scale(1.07);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-yes {
+  background: linear-gradient(180deg, var(--accent1), var(--accent2));
+  color: #2a0a17;
+  box-shadow: 0 0 15px rgba(255, 120, 180, 0.4);
+}
+.btn-no {
+  background: linear-gradient(180deg, #ff768a, #ff5a73);
+  color: #2a070b;
+  box-shadow: 0 0 15px rgba(255, 100, 150, 0.4);
+}
+.btn-yes:hover,
+.btn-no:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 25px rgba(255, 160, 220, 0.5);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--accent3), var(--accent1));
+  color: #2a0a17;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--accent2);
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--accent1);
+  color: var(--accent3);
+}
+.btn-outline:hover {
+  background: rgba(255, 130, 180, 0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+.result-text {
+  font-size: 1.3rem;
+  text-align: center;
+}
+.final-box {
+  padding: 14px;
+  background: #160d13;
+  border-radius: 10px;
+  text-align: center;
+  color: var(--accent3);
+  font-weight: 600;
+}
+.final-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
